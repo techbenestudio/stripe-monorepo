@@ -269,7 +269,7 @@ and open the webapp in a browser (http://localhost:4200/). We should see the pro
 
 In the folder tree, select `apps/sporty-brand-web/src/app`, and right click, select `Nx generate`, type `component`, hit `enter`. 
 
-- Component name: item
+- Component name: product
 - Change detection: OnPush
 
 Rest can be left default. Click Run. Not only does this add the files for the component, but also edits the app module to make it available to the application, by adding it to declarations.
@@ -280,40 +280,7 @@ Also add `HttpClientModule` to the `imports` array. VS Code should be able to im
 
 `import { HttpClientModule } from '@angular/common/http';`
 
-Now we get to type a bit. (Yes, it will be very similar to what we did prevously – please use your imagination to pretend that the two apps differ a bit more than they are, as we don't have time to make them complex enough to actually do that 😊)
-
-## product.component.ts`
-
-```
-export class ProductComponent {
-
-  @Input()
-  name!: string;
-
-  @Input()
-  price!: number;
-
-  @Input()
-  img!: string;
-}
-```
-
-Also change the import line
-
-`import { Component, Input, ChangeDetectionStrategy } from '@angular/core';`
-
-## product.component.html
-
-```
-<div class="product">
-  <div class="heading">{{name}}</div>
-  <img [src]="img">
-  <div class="details">
-    <span>{{price}} HUF</span>
-    <button>BUY NOW</button>
-  </div>
-</div>
-```
+Now we can just copy the content of `product.component.ts` and `product.component.html`. (Our two frontend apps will be basically the same this way – please use your imagination to pretend that the two apps differ a bit more than they are, as we don't have time to make them complex enough to actually do that 😊)
 
 ## Sharing product.models in a library
 
@@ -416,41 +383,47 @@ Put this before the first `app.get` call:
 app.use(express.json());
 ```
 
-Also refactor your product lists to variables, and give each product an ID:
+Also refactor your product lists to variables, like this:
 
 ```
-const elegantProducts = [
-  {
-    id: 1,
-    name: 'fancy shoes',
-    price: 10000,
-  },
-  {
-    id: 2,
-    name: 'little black dress',
-    price: 30000,
-  },
-  {
-    id: 3,
-    name: 'merino shirt',
-    price: 100000,
-  },
-];
+const elegantProducts =  [
+    {
+      id: 1,
+      name: 'fancy shoes',
+      img: '/api/static/fancy-shoes.jpg',
+      price: 10000,
+    },
+    {
+      id: 2,
+      name: 'fancy overall',
+      img: '/api/static/fancy-overall.jpg',
+      price: 30000,
+    },
+    {
+      id: 3,
+      name: 'suit',
+      img: '/api/static/suit.jpg',
+      price: 100000,
+    },
+  ];
 
-const fashionProducts = [
+const sportyProducts =  [
   {
     id: 4,
     name: 'running shoes',
+    img: '/api/static/running-shoe.jpg',
     price: 10000,
   },
   {
     id: 5,
-    name: 'black trainers',
+    name: 'sweatpants',
+    img: '/api/static/sweatpants.jpg',
     price: 30000,
   },
   {
     id: 6,
     name: 'arctic jacket',
+    img: '/api/static/arctic-jacket.jpg',
     price: 100000,
   },
 ];
@@ -464,8 +437,9 @@ app.get('/api/elegant', (req, res) => {
 
 app.get('/api/sporty', (req, res) => {
   res.send({
-    products: fashionProducts,
+    products: sportyProducts,
   });
+});
 ```
 
 Finally, add our new endpoint – this will be called as part of the payment process.
@@ -476,7 +450,7 @@ app.post('/api/stripe-init', async (req, res) => {
     'sk_test_xxx' //your key here
   );
 
-  const product = [...elegantProducts, ...fashionProducts].find(p => p.id === req.body.id);
+  const product = [...elegantProducts, ...sportyProducts].find(p => p.id === req.body.id);
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: product.price * 100, // i.e. to pay 9.99, we have to pass 999 to Stripe
@@ -498,8 +472,9 @@ Now extend our interface, then write our component:
 ```
 export interface IProduct { 
     id: number; // this is the new bit
-	name: string; 
-    price: number; 
+    name: string;
+    price: number;
+    img: string;
 }
 ```
 
@@ -620,6 +595,8 @@ export class StripeButtonComponent implements OnInit {
 }
 ```
 
+> NOTE: `canPay$` and `paymentState$` are represented as observables rather than plain fields to aid the change detection mechanism, which normally "loses track" inbetween async-await calls. Other possible solutions would be calling the change detector explicitly whenever we change these properties (which is quite error-prone) or refactoring the Stripe logic into a service, and then "plugging in" `canPay` and `paymentState` as component inputs (which always get proper change detection) – that would actually be the "real-world" preferred way of doing it, but during this workshop we just go for the simpler, observables-based solution.
+
 ## stripe-button.component.html
 
 ```
@@ -644,33 +621,9 @@ Just add `import { HttpClientModule } from '@angular/common/http';` at the top a
 
 Then we can start using it in our apps:
 
-- Import `SharedWebModule` in both app modules
-- Change the item / product components as follows:
+- Import `SharedWebModule` in both app modules (`import { SharedWebModule } from '@nx-stripe-workshop/shared-web';` at the top and then add it to the `imports` array)
+- Change the product components as follows:
 
-## item.component.ts
-
-Add this input:
-
-```
-  @Input()
-  itemId!: number;
-```
-
-## item.component.html
-
-Replace the current button with this:
-
-```
-<nx-stripe-workshop-stripe-button [amount]="price" currency="HUF" [label]="name" [productId]="itemId"></nx-stripe-workshop-stripe-button>
-```
-
-## sporty-brand-web/.../app.component.html
-
-Set the `itemId` attribute on this line:
-
-```
-<nx-stripe-workshop-item [name]='item.name' [price]='item.price' [itemId]='item.id'></nx-stripe-workshop-item>
-```
 
 ## product.component.ts
 
@@ -701,9 +654,12 @@ And we are done!
 
 Time to try it out:
 
-- Stop the `http-server` instance that we started at the beginning, but NOT ngrok. (If you have accidentally closed it, you can run it again with `ngrok http 8080` – but do note that you'll have to restart the Apple verification process if you want to try Apple Pay in Safari. You don't need to worry about this for Google Pay or Stripe Pay.)
-- Run `nx serve fashion-backend` and `nx serve elegant-brand-web --port 8080 --disable-host-check` in separate terminals.
+- Run `./ngrok http 4200` (in the folder where you have your ngrok binaries) to start our proxy (we need this to access the app through HTTPS, which is required for Stripe Pay). Take note of your URL (the one over https).
+- Run `nx serve fashion-backend` and `nx serve elegant-brand-web --disable-host-check` in separate terminals. (The extra flag on the second call is needed for ngrok to be able to access our local Angular development server.)
+- If you are signed into Chrome with your actual Google account, and that _account_ has a saved Google Pay card, you can open your ngrok URL now and you should see the Google Pay button next to our products. You can click on them, but don't click Pay – you wouldn't want to pay with your real card. Instead, create a new profile in Chrome by clicking your profile icon, and selecting "Continue without an account". (Again, if you are not signed into Chrome, you can skip this.)
 - Save [a Stripe test card](https://stripe.com/docs/testing) in Chrome by visiting `chrome://settings/payments`. Be careful to avoid testing with your actual card!
-- Open your ngrok URL in a browser. (Be sure to use the one with https.) The Stripe pay buttons should appear, and you should be able to complete your purchase. In case you added a test card requiring 3DS validation, the 3DS UI should trigger automatically as well.
-- Note that Stripe uses a generic branding on the button for saved cards (Stripe Pay). If you sign in to Chrome with your Google Account and have Google Pay set up, you'll see the Google Pay branding. In Safari, if you have Apple Pay setup, you should see the Apple Pay branding – though for that to work, you must have completed the verification successfully at the beginning of this workshop; you might also need to use live keys (not test keys) in your backend and your application(s), and you can't use Stripe test cards for testing.
+- Open your ngrok URL in a browser. (Be sure to use the one with https.) The Stripe pay buttons should appear (which is basically the same as a Google Pay button, just different branding), and you should be able to complete your purchase. In case you added a test card requiring 3DS validation, the 3DS UI should trigger automatically as well.
 
+> _Some more details on the button branding:_ Stripe uses a generic branding ("Stripe Pay") on the button for cards saved locally in the browser – this is what we tried now. If you sign in to Chrome with your Google Account and have Google Pay set up, you'll see the Google Pay branding. With this same codebase we have written, we _could_ also active the Apple Pay branding in Safari (for users that have Apple Pay set up), but that needs an additional domain verification step (which we couldn't even complete with a free ngrok account) – that is out of scope for this workshop.
+
+> _Troubleshooting – if you see the fallback button:_ Verify that you have opened the HTTPS version of the ngrok URL and that you have a saved card set up _locally_ in Chrome. If both are true, and it still does not work, open [https://stripe.com/docs/stripe-js/elements/payment-request-button](https://stripe.com/docs/stripe-js/elements/payment-request-button). If you see the button _there_, then the issue is in your application. But if that page shows _"Either your browser does not support the Payment Request API, or you do not have a saved payment method."_ then either you _still_ didn't save the test card properly (which is unlikely at this point), or there are issues on Stripe's or Google's side outside your control (which, sadly, happens sometimes). If all else fails, you can at least _partially_ test your application by opening your ngrok URL with a Chrome profile that _does_ have a Google Pay card set up – that scenario is much less error prone than locally saved cards (and in the "real world", much more common anyway), so if nothing else, that one should make the button show up. Just be sure to not complete the payment flow to avoid charges on your real card.
