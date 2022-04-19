@@ -166,7 +166,7 @@ Also add `HttpClientModule` to the `imports` array. VS Code should be able to im
 
 Now we get to type a bit:
 
-## product.component.ts`
+## product.component.ts
 
 ```
 export class ProductComponent {
@@ -243,7 +243,7 @@ NOTE: in a real-world angular app, we would:
 ```
 <ng-container *ngIf='products; else loading'>
     <ng-container *ngFor='let product of products'>
-        <nx-stripe-workshop-product [name]='product.name' [price]='product.price'></nx-stripe-workshop-product>
+        <nx-stripe-workshop-product [name]='product.name' [price]='product.price' [img]='product.img'></nx-stripe-workshop-product>
     </ng-container>
 </ng-container>
 
@@ -328,9 +328,9 @@ export class AppComponent implements OnInit {
 ## app.component.html
 
 ```
-<ng-container *ngIf='items; else loading'>
-    <ng-container *ngFor='let item of items'>
-        <nx-stripe-workshop-item [name]='item.name' [price]='item.price'></nx-stripe-workshop-item>
+<ng-container *ngIf='products; else loading'>
+    <ng-container *ngFor='let product of products'>
+        <nx-stripe-workshop-product [name]='product.name' [price]='product.price' [img]='product.img'></nx-stripe-workshop-product>
     </ng-container>
 </ng-container>
 
