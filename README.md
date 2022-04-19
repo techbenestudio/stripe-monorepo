@@ -315,11 +315,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get<{ products: IProduct[] }>('/api/sporty').subscribe(res => {
-        this.items = res.products;
+        this.products = res.products;
     })
   }
 
-  items: IProduct[] | null = null;
+  products: IProduct[] | null = null;
 }
 ```
 
