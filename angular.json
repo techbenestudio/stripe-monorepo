@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "projects": {
+    "elegant-brand-web": {
+      "projectType": "application",
+      "root": "apps/elegant-brand-web",
+      "sourceRoot": "apps/elegant-brand-web/src",
+      "prefix": "nx-stripe-workshop",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/elegant-brand-web",
+            "index": "apps/elegant-brand-web/src/index.html",
+            "main": "apps/elegant-brand-web/src/main.ts",
+            "polyfills": "apps/elegant-brand-web/src/polyfills.ts",
+            "tsConfig": "apps/elegant-brand-web/tsconfig.app.json",
+            "assets": [
+              "apps/elegant-brand-web/src/favicon.ico",
+              "apps/elegant-brand-web/src/assets"
+            ],
+            "styles": ["apps/elegant-brand-web/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/elegant-brand-web/src/environments/environment.ts",
+                  "with": "apps/elegant-brand-web/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "elegant-brand-web:build:production"
+            },
+            "development": {
+              "browserTarget": "elegant-brand-web:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "elegant-brand-web:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/elegant-brand-web/src/**/*.ts",
+              "apps/elegant-brand-web/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/elegant-brand-web"],
+          "options": {
+            "jestConfig": "apps/elegant-brand-web/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "elegant-brand-web-e2e": {
+      "root": "apps/elegant-brand-web-e2e",
+      "sourceRoot": "apps/elegant-brand-web-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/elegant-brand-web-e2e/cypress.json",
+            "devServerTarget": "elegant-brand-web:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "elegant-brand-web:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/elegant-brand-web-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["elegant-brand-web"]
+    }
+  }
+}
