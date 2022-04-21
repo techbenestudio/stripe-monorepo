@@ -1,1 +1,9 @@
-<nx-stripe-workshop-nx-welcome></nx-stripe-workshop-nx-welcome>
+<ng-container *ngIf='products; else loading'>
+    <ng-container *ngFor='let product of products'>
+        <nx-stripe-workshop-product [name]='product.name' [price]='product.price' [img]='product.img'></nx-stripe-workshop-product>
+    </ng-container>
+</ng-container>
+
+<ng-template #loading>
+    Loading...
+</ng-template>

@@ -177,6 +177,32 @@
       },
       "tags": []
     },
+    "shared-web": {
+      "projectType": "library",
+      "root": "libs/shared-web",
+      "sourceRoot": "libs/shared-web/src",
+      "prefix": "nx-stripe-workshop",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared-web"],
+          "options": {
+            "jestConfig": "libs/shared-web/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared-web/src/**/*.ts",
+              "libs/shared-web/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
     "sporty-brand-web": {
       "projectType": "application",
       "root": "apps/sporty-brand-web",
