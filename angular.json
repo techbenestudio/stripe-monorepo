@@ -66,7 +66,10 @@
               "browserTarget": "elegant-brand-web:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/elegant-brand-web/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -121,6 +124,58 @@
       },
       "tags": [],
       "implicitDependencies": ["elegant-brand-web"]
+    },
+    "fashion-backend": {
+      "root": "apps/fashion-backend",
+      "sourceRoot": "apps/fashion-backend/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/fashion-backend",
+            "main": "apps/fashion-backend/src/main.ts",
+            "tsConfig": "apps/fashion-backend/tsconfig.app.json",
+            "assets": ["apps/fashion-backend/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/fashion-backend/src/environments/environment.ts",
+                  "with": "apps/fashion-backend/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:node",
+          "options": {
+            "buildTarget": "fashion-backend:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/fashion-backend/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/fashion-backend"],
+          "options": {
+            "jestConfig": "apps/fashion-backend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
     }
   }
 }
