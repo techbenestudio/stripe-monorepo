@@ -176,6 +176,130 @@
         }
       },
       "tags": []
+    },
+    "sporty-brand-web": {
+      "projectType": "application",
+      "root": "apps/sporty-brand-web",
+      "sourceRoot": "apps/sporty-brand-web/src",
+      "prefix": "nx-stripe-workshop",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/sporty-brand-web",
+            "index": "apps/sporty-brand-web/src/index.html",
+            "main": "apps/sporty-brand-web/src/main.ts",
+            "polyfills": "apps/sporty-brand-web/src/polyfills.ts",
+            "tsConfig": "apps/sporty-brand-web/tsconfig.app.json",
+            "assets": [
+              "apps/sporty-brand-web/src/favicon.ico",
+              "apps/sporty-brand-web/src/assets"
+            ],
+            "styles": ["apps/sporty-brand-web/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/sporty-brand-web/src/environments/environment.ts",
+                  "with": "apps/sporty-brand-web/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "sporty-brand-web:build:production"
+            },
+            "development": {
+              "browserTarget": "sporty-brand-web:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/sporty-brand-web/proxy.conf.json"
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sporty-brand-web:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/sporty-brand-web/src/**/*.ts",
+              "apps/sporty-brand-web/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/sporty-brand-web"],
+          "options": {
+            "jestConfig": "apps/sporty-brand-web/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "sporty-brand-web-e2e": {
+      "root": "apps/sporty-brand-web-e2e",
+      "sourceRoot": "apps/sporty-brand-web-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/sporty-brand-web-e2e/cypress.json",
+            "devServerTarget": "sporty-brand-web:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "sporty-brand-web:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/sporty-brand-web-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["sporty-brand-web"]
     }
   }
 }
