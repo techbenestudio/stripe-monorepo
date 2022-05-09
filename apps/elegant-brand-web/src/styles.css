@@ -1,103 +1,104 @@
 .elegant {
-  --primary: #b6a581;
-  --primary-text: white;
-  --product-border: 1px solid var(--primary);
-  --product-background: rgba(255, 122, 27, 0.03);
-  --font-family: Garamond;
-}
-
-.sporty {
-  --primary: #ff7a1b;
-  --primary-text: white;
-  --product-border: 3px solid var(--primary);
-  --product-background: rgba(255, 122, 27, 0.03);
-  --font-family: Arial, serif;
-}
-
-
-body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-family);
-}
-
-body > :first-child{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 0 50px;
-  justify-content: center;
-  column-gap: 40px;
-}
-
-body::before {
-  background-color: var(--primary);
-  padding: 14px;
-  color: var(--primary-text);
-  font-style: italic;
-  margin-bottom: 50px;
-}
-
-.elegant > body::before {
-  content: "Shine bright";
-  font-size: 30px;
-}
-
-.sporty > body::before {
-  content: "Run fast";
-  font-size: 30px;
-  font-weight: bolder;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.product {
-  display: flex;
-  flex-direction: column;
-  border: var(--product-border);
-  background-color: var(--product-background);
-}
-
-.details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  padding: 10px 20px;
-  font-size: 18px;
-}
-
-img {
-  width: 100%;
-  height: 214px;
-  object-fit: contain;
-}
-
-button {
-  width: 100%;
-  border: none;
-
-  padding: 5px 8px;
-  color: var(--primary-text);
-  background-color: var(--primary);
-  font-weight: bolder;
-  font-size: 18px;
-}
-
-.elegant button {
-  text-transform: capitalize;
-}
-.sporty button {
-  text-transform: uppercase;
-}
-
-.heading {
-  padding: 10px;
-  font-style: italic;
-}
-
-.elegant .heading {
-  text-transform: capitalize;
-}
-.sporty .heading {
-  text-transform: uppercase;
-}
-
+    --primary: #b6a581;
+    --primary-text: white;
+    --product-border: 1px solid var(--primary);
+    --product-background: rgba(255, 122, 27, 0.03);
+    --font-family: Garamond;
+  }
+  
+  .sporty {
+    --primary: #ff7a1b;
+    --primary-text: white;
+    --product-border: 3px solid var(--primary);
+    --product-background: rgba(255, 122, 27, 0.03);
+    --font-family: Arial, serif;
+  }
+  
+  
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-family);
+  }
+  
+  body > :first-child{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0 50px;
+    justify-content: center;
+    column-gap: 40px;
+  }
+  
+  body::before {
+    background-color: var(--primary);
+    padding: 14px;
+    color: var(--primary-text);
+    font-style: italic;
+    margin-bottom: 50px;
+  }
+  
+  .elegant > body::before {
+    content: "Shine bright";
+    font-size: 30px;
+  }
+  
+  .sporty > body::before {
+    content: "Run fast";
+    font-size: 30px;
+    font-weight: bolder;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  .product {
+    display: flex;
+    flex-direction: column;
+    border: var(--product-border);
+    background-color: var(--product-background);
+  }
+  
+  .details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px 20px;
+    font-size: 18px;
+  }
+  
+  img {
+    width: 100%;
+    height: 214px;
+    object-fit: contain;
+  }
+  
+  button {
+    width: 100%;
+    border: none;
+  
+    padding: 5px 8px;
+    color: var(--primary-text);
+    background-color: var(--primary);
+    font-weight: bolder;
+    font-size: 18px;
+  }
+  
+  .elegant button {
+    text-transform: capitalize;
+  }
+  .sporty button {
+    text-transform: uppercase;
+  }
+  
+  .heading {
+    padding: 10px;
+    font-style: italic;
+  }
+  
+  .elegant .heading {
+    text-transform: capitalize;
+  }
+  .sporty .heading {
+    text-transform: uppercase;
+  }
+  
+  

@@ -3,6 +3,11 @@
     <img [src]="img">
     <div class="details">
       <span>{{price}} HUF</span>
-      <button>BUY NOW</button>
+      <nx-stripe-workshop-stripe-button
+        [amount]="price"
+        currency="HUF"
+        [label]="name"
+        [productId]="productId"
+      ></nx-stripe-workshop-stripe-button>
     </div>
   </div>

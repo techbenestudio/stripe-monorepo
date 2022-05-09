@@ -1,0 +1,12 @@
+<div [id]="'stripe-button-' + buttonId" *ngIf="canPay$ | async; else fallback"></div>
+
+<div [ngSwitch]="paymentState$ | async">
+    <p *ngSwitchCase="'LOADING'">Loading...</p>
+    <p *ngSwitchCase="'SUCCESS'">Thank you!</p>
+    <p *ngSwitchCase="'ERROR'">Oh no :(</p>
+</div>
+
+<ng-template #fallback>
+    <!-- Fallback button. In a full solution, clicking this should show a "regular" credit card form, using Stripe or anything else -->
+    <button>Buy now</button>
+</ng-template>

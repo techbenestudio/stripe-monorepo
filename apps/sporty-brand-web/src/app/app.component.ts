@@ -8,7 +8,6 @@ import { IProduct } from '@nx-stripe-workshop/shared-web';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  products: IProduct[] | null = null;
 
   constructor(private http: HttpClient) {
   }
@@ -19,4 +18,5 @@ export class AppComponent implements OnInit {
     })
   }
 
+  products: IProduct[] | null = null;
 }
